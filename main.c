@@ -2,12 +2,40 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+struct Color {
+    int R;
+    int G;
+    int B;
+};
+
+struct Color red = { .R = 255, .G = 0, .B = 0 };
+struct Color orange = { .R = 255, .G = 120, .B = 0 };
+struct Color green = { .R = 0, .G = 255, .B = 0 };
+struct Color blue = { .R = 0, .G = 0, .B = 255 };
+struct Color white = { .R = 255, .G = 255, .B = 255 };
+struct Color black = { .R = 0, .G = 0, .B = 0 };
+
+struct Color colors[8][8];
+
 int loops = 0;
+
+void generateColors()
+{
+    // Pick colors
+    for (int y = 0; y < 8; ++y) {
+        for (int x = 0; x < 8; ++x) {
+            colors[y][x] = blue;
+            if (rand() % 2) {
+                colors[y][x] = red;
+            }
+        }
+    }
+}
 
 void draw(SDL_Renderer *renderer)
 {
     // Hack to slow down draws, probably dependent on CPU clock speed
-    if (loops < 100000) {
+    if (loops < 50000) {
         ++loops;
         return;
     }
@@ -30,8 +58,9 @@ void draw(SDL_Renderer *renderer)
             r.w = 50;
             r.h = 50;
 
-            // Set random color
-            SDL_SetRenderDrawColor(renderer, rand() % 256, rand() % 256, rand() % 256, 255);
+            // Apply color to square
+            struct Color c = colors[y][x];
+            SDL_SetRenderDrawColor(renderer, c.R, c.G, c.B, 255);
 
             // Render rect
             SDL_RenderFillRect(renderer, &r);
@@ -76,6 +105,7 @@ int main (int argc, char *argv[])
         }
 
         // Draw the scene
+        generateColors();
         draw(renderer);
     }
 
