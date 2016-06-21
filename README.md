@@ -1,1 +1,1 @@
-`gcc main.cpp -o app -framework SDL2`
+`gcc main.c -o app -framework SDL2`
