@@ -1,7 +1,11 @@
+#include <time.h>
 #include <SDL2/SDL.h>
 
 int main (int argc, char** argv)
 {
+    // Seed rand
+    srand(time(NULL));
+
     SDL_Window* window = NULL;
     window = SDL_CreateWindow
     (
